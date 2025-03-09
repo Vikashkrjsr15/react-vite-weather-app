@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Day Background */
+.bg-day {
+  background: linear-gradient(to right, #3b82f6, #1e40af, #60a5fa);
+}
+
+/* Evening / Sunset Background */
+.bg-evening {
+  background: linear-gradient(to right, #e65727, #962424, #611b97);
+}
+
+/* Night Background */
+.bg-night {
+  background: linear-gradient(to right, #111827, #000000, #1f2937);
+  position: relative;
+  overflow: hidden;
+}
+/* Red Sun for Evening */
+.sun {
+  position: absolute;
+  top: 15%;
+  right: 15%;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle at center, #ffcc00, #ff4500);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 100, 0, 0.8);
+}
+
+/* Moon for Night */
+.moon {
+  position: absolute;
+  top: 15%;
+  right: 15%;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at 30% 30%, #ffffdd, #ddddcc);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 255, 200, 0.8);
+}
