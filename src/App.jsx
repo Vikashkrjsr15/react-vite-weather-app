@@ -153,7 +153,7 @@ function App() {
               <p className="text-lg font-semibold text-center">{city ? `${city} Analog Clock` : "City Clock"}</p>
         </div>
         {/* Weather Card - Center */}
-        <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-lg p-6 w-full max-w-sm text-center border border-white/30">
+        <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-lg p-6  max-w-sm text-center border border-white/30">
           {/* Search Bar */}
           <div className="flex items-center bg-white/20 px-4 py-2 rounded-full mb-4">
             <input
