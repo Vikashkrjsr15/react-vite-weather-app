@@ -1,55 +1,41 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-// import { WiHumidity, WiStrongWind } from "react-icons/wi";
 import axios from "axios";
 import {
-  WiHumidity,
-  WiStrongWind,
-  WiSunrise,
-  WiSunset,
-  WiThermometer,
-  WiThermometerExterior,
-} from "react-icons/wi";
+  WiHumidity,WiStrongWind,WiSunrise,WiSunset,WiThermometer,WiThermometerExterior,} from "react-icons/wi";
 import "./index.css";
-
 
 function AnalogClock({ hours, minutes, seconds }) {
   const hourDeg = (hours % 12) * 30 + minutes * 0.5;
   const minuteDeg = minutes * 6;
   const secondDeg = seconds * 6;
-
   return (
-    <div className="relative w-96 h-96 border-4 border-white rounded-full flex justify-center items-center">
-      {/* Clock center */}
-      <div className="absolute w-4 h-4 bg-white rounded-full z-10"></div>
-
+    <div  className="relative w-56 h-56 md:w-72 md:h-72 lg:w-96 lg:h-96 border-4 border-white rounded-full flex justify-center items-center">
+      <div className="absolute w-3 h-3 bg-white rounded-full z-10"></div>
       {/* Hour Hand */}
       <div
-        className="absolute w-[4px] h-24 bg-white top-1/2 left-1/2 origin-bottom"
+        className="absolute w-[4px] h-16 md:h-20 lg:h-24 bg-white top-1/2 left-1/2 origin-bottom"
         style={{
           transform: `translate(-50%, -100%) rotate(${hourDeg}deg)`,
           transformOrigin: "50% 100%",
         }}
       ></div>
-
       {/* Minute Hand */}
       <div
-        className="absolute w-[3px] h-32 bg-gray-300 top-1/2 left-1/2 origin-bottom"
+        className="absolute w-[3px] h-24 md:h-28 lg:h-32 bg-gray-300 top-1/2 left-1/2 origin-bottom"
         style={{
           transform: `translate(-50%, -100%) rotate(${minuteDeg}deg)`,
           transformOrigin: "50% 100%",
         }}
       ></div>
-
       {/* Second Hand */}
       <div
-        className="absolute w-[2px] h-36 bg-red-500 top-1/2 left-1/2 origin-bottom"
+        className="absolute w-[2px] h-28 md:h-32 lg: bg-red-500 top-1/2 left-1/2 origin-bottom"
         style={{
           transform: `translate(-50%, -100%) rotate(${secondDeg}deg)`,
           transformOrigin: "50% 100%",
         }}
       ></div>
-
       {/* Clock Numbers */}
       {[...Array(12)].map((_, i) => (
         <div
@@ -67,12 +53,10 @@ function AnalogClock({ hours, minutes, seconds }) {
     </div>
   );
 }
-
 function App() {
   const [Search, setSearch] = useState("");
   const [Loading, setLoading] = useState(false);
   const API_KEY = "e97105be1a34aa4bf3aae55784ec9a1c";
-
   const [temprature, setTemprature] = useState(null);
   const [humidity, setHumidity] = useState(null);
   const [windspeed, setWindspeed] = useState(null);
@@ -86,10 +70,8 @@ function App() {
   const [timezone, setTimezone] = useState(null);
   const [localTime, setLocalTime] = useState("");
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
-
   const fetchCity = async () => {
-    if (!Search.trim()) return; // Prevent empty searches
-
+    if (!Search.trim()) return;
     setLoading(true);
     try {
       const { data } = await axios.get(
@@ -112,18 +94,28 @@ function App() {
       console.error("Error fetching weather data:", error);
       setCity("city not found");
       setWeathericon("01d");
+      setTemprature(null);
+     setHumidity(null);
+       setWindspeed(null);
+      setWeathericon("01d");
+      setWeatherDesc("");
+      setMinTemp(null);
+      setMaxTemp(null);
+      setSunrise(null);
+      setSunset(null);
+      setTimezone(null);
+      setLocalTime("");
+      setTime({ hours: 0, minutes: 0, seconds: 0 });
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     if (!timezone) return;
     const updateTime = () => {
       const now = new Date();
       const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
       const cityTime = new Date(utcTime + timezone * 1000);
-
       setTime({
         hours: cityTime.getHours(),
         minutes: cityTime.getMinutes(),
@@ -131,65 +123,47 @@ function App() {
       });
       setLocalTime(cityTime.toLocaleTimeString());
     };
-
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, [timezone]);
-
   const getBackgroundClass = () => {
-    if (!timezone) return "bg-day"; // Default to daytime if no timezone is set
-  
+    if (!timezone) return "bg-day";
     const now = new Date();
     const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
     const cityTime = new Date(utcTime + timezone * 1000);
     const hour = cityTime.getHours();
-  
-    if (hour >= 18 && hour < 20) return "bg-evening"; // Sunset 🌅
-    if (hour >= 20 || hour < 6) return "bg-night"; // Night 🌙
-    
-    return "bg-day"; // Daytime 🌞
+    if (hour >= 18 && hour < 20) return "bg-evening";
+    if (hour >= 20 || hour < 6) return "bg-night"; 
+    return "bg-day";
   };
-  
-  
-  
-
   return (
     <>
       <div
-        className={`flex flex-col lg:flex-row justify-center items-center lg:justify-between h-screen text-white ${getBackgroundClass()} p-4`}>
+        className={`flex flex-col lg:flex-row justify-center items-center lg:justify-between text-white ${getBackgroundClass()} p-3`}>
       {/* Evening Sun */}
   {getBackgroundClass() === "bg-evening" && <div className="sun"></div>}
-
 {/* Night Moon */}
 {getBackgroundClass() === "bg-night" && <div className="moon"></div>}
-        
         {/* Analog Clock - Left */}
-    
-        <div className="flex flex-col items-center ml-4 mb-6 lg:mb-0">
+        <div className="flex flex-col items-center  mb-6 lg:mb-0">
           <AnalogClock
             hours={time.hours}
             minutes={time.minutes}
             seconds={time.seconds}
           />
-              <p className="mt-2 text-lg font-semibold">{city ? `${city} Analog Clock` : "City Clock"}</p>
+              <p className="text-lg font-semibold text-center">{city ? `${city} Analog Clock` : "City Clock"}</p>
         </div>
-     
-
-        {/* <div className="flex flex-col justify-center items-center h-screen text-white bg-gradient-to-r from-blue-500 via-blue-700 to-blue-400"> */}
-        {/* search bar */}
-
         {/* Weather Card - Center */}
-        <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-lg p-6 w-full max-w-lg text-center border border-white/30">
-        {/* <h1>Check Weather</h1> */}
+        <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-lg p-6 w-full max-w-sm text-center border border-white/30">
           {/* Search Bar */}
-          <div className="flex items-center bg-white/20 backdrop-blur-lg px-6 py-3 rounded-full w-full max-w-md mx-auto mb-5 shadow-xl border border-white/30">
+          <div className="flex items-center bg-white/20 px-4 py-2 rounded-full  mb-4">
             <input
               type="text"
               placeholder="Search city..."
               value={Search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 text-white placeholder-gray-300 bg-transparent outline-none px-4 text-lg"
+              className="flex-1 text-white placeholder-gray-300 bg-transparent outline-none text-lg"
             />
             <FaSearch
               onClick={fetchCity}
@@ -200,14 +174,11 @@ function App() {
           <img
             src={`http://openweathermap.org/img/wn/${weathericon}@2x.png`}
             alt="Weather Icon"
-            className="w-20 h-20 drop-shadow-lg mx-auto"
+            className="w-20 mx-auto"
           />
-
           <p className="capitalize text-lg text-gray-200">
             {weatherDesc || "--"}
           </p>
-          {/* <p className="text-lg mt-2">🕰️ Local Time: {localTime}</p> */}
-
           {/* Temprature and city */}
           <h1 className="text-5xl md:text-6xl font-bold text-white mt-3 drop-shadow-md">
             {" "}
@@ -246,7 +217,6 @@ function App() {
               <span>{minTemp !== null ? `${minTemp}°C` : "--"}</span>
               <p className="text-sm">Min Temp</p>
             </div>
-
             {/* Humidity & Wind Speed */}
             <div className="flex flex-col items-center">
               <WiHumidity className="text-5xl text-blue-200 drop-shadow-md" />
@@ -280,16 +250,14 @@ function App() {
           </div>
         </div>
         {/* Digital Clock - Right */}
-        <div className="text-3xl font-bold bg-black/40 px-6 py-3 rounded-lg mt-6 ml-2 lg:mt-0">
+        <div className="text-3xl font-bold bg-black/40 px-6 py-3 rounded-lg mt-6 lg:mt-0">
           {time.hours.toString().padStart(2, "0")}:
           {time.minutes.toString().padStart(2, "0")}:
           {time.seconds.toString().padStart(2, "0")}
-          <p className="mt-2 text-lg font-semibold">{city ? `${city} Digital Clock` : "City Clock"}</p>
+          <p className="mt-2 text-lg font-semibold text-center">{city ? `${city} Digital Clock` : "City Clock"}</p>
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 }
-
 export default App;
