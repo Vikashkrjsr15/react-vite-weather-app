@@ -40,11 +40,9 @@ function AnalogClock({ hours, minutes, seconds }) {
       {[...Array(12)].map((_, i) => (
         <div
           key={i}
-          className="absolute text-white text-lg font-bold"
+          className="absolute text-white text-sm md:text-lg font-bold"
           style={{
-            transform: `rotate(${i * 30}deg) translateY(-170px) rotate(-${
-              i * 30
-            }deg)`,
+            transform: `rotate(${i * 30}deg) translateY(var(--clock-number-offset)) rotate(-${i * 30}deg)`,
           }}
         >
           {i === 0 ? 12 : i}
@@ -157,7 +155,7 @@ function App() {
         {/* Weather Card - Center */}
         <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-lg p-6 w-full max-w-sm text-center border border-white/30">
           {/* Search Bar */}
-          <div className="flex items-center bg-white/20 px-4 py-2 rounded-full  mb-4">
+          <div className="flex items-center bg-white/20 px-4 py-2 rounded-full mb-4">
             <input
               type="text"
               placeholder="Search city..."

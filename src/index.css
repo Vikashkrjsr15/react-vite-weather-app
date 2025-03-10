@@ -40,3 +40,19 @@
   border-radius: 50%;
   box-shadow: 0 0 20px rgba(255, 255, 200, 0.8);
 }
+:root {
+  --clock-number-offset: -100px;
+}
+
+@media (min-width: 768px) { /* md */
+  :root {
+    --clock-number-offset: -125px;
+  }
+}
+
+@media (min-width: 1024px) { /* lg */
+  :root {
+    --clock-number-offset: -170px;
+  }
+}
+
